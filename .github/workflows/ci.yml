@@ -25,6 +25,3 @@ jobs:
           anaconda-user: "scipy-wheels-nightly"
           anaconda-project: "matplotlib"
           anaconda-token: "none"
-
-      - name: Check if cleanup needed
-        run: ls -lhtra

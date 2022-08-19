@@ -94,7 +94,6 @@ runs:
             sed 's/.* + //' | \
             head --lines "-${{ inputs.n-latest-uploads }}" > remove-package-versions.txt
 
-        cat remove-package-versions.txt
         # if [ -s remove-package-versions.txt ]; then
         #     while LANG=C IFS= read -r package_version ; do
         #         echo "# Removing ${{ inputs.anaconda-user }}/${{ inputs.anaconda-project }}/${package_version}"
