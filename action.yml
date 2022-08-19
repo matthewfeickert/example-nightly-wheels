@@ -26,6 +26,9 @@ runs:
         environment-name: nightly-wheels
         extra-specs: anaconda-client=1.10.0
         channels: main
+
+    - name: Check anaconda-client
+      run: anaconda --help
       shell: bash -l {0}
 
     # - name: Install micromamba and anaconda-client
