@@ -67,6 +67,8 @@ runs:
         gh run --repo "${{ inputs.project-repo }}" \
             download "${RUN_ID}" --name "${{ inputs.artifact-name }}"
 
+        ls -lhtra
+
         mkdir dist
         mv *.whl dist/
         echo "# Downloaded ${{ inputs.project-repo }} wheels"
