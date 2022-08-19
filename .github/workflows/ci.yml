@@ -16,3 +16,6 @@ jobs:
 
       - name: Default inputs
         uses: ./
+        with:
+          project-repo: "matplotlib/matplotlib"
+
