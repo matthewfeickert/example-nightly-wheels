@@ -64,7 +64,7 @@ jobs:
           target-branch: "main"
           workflow-name: "wheel builder"
           workflow-event-type: "schedule"
-          artifact-name: "artifact"
+          artifact-name: "cp38-manylinux_x86_64"
           anaconda-user: "scipy-wheels-nightly"
           anaconda-project: "numpy"
           anaconda-token: "none"
