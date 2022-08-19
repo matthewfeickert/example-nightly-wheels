@@ -5,20 +5,19 @@ branding:
   icon: "package"
   color: "green"
 inputs:
-  python:
-    description: "Command to run Python"
-    required: true
-    default: "python"
-  requirements-file:
-    description: "Path to a requirements file"
-    required: false
-    default: "requirements.txt"
-  options:
-    description: "Extra CLI options"
-    required: false
   project-repo:
     description: "GitHub project name to download built wheels from"
     required: true
+  target-branch:
+    description: "Project branch to check for workflows run"
+    required: true
+  workflow-name:
+    description: "Workflow name to query runs"
+    required: true
+  artifact-name:
+    description: "Artifact to try to download"
+    required: true
+    default: "wheels"
   token:
     description: "GitHub token for access to gh API"
     required: false
@@ -34,19 +33,12 @@ runs:
         extra-specs: anaconda-client=1.10.0
         channels: main
 
-    - name: Check anaconda-client
-      run: anaconda --help
-      shell: bash -l {0}
-
     # c.f. https://github.com/actions/download-artifact/issues/3#issuecomment-1017141067
     - name: Download wheel artifacts from last build on 'main'
       run: |
-        BRANCH="main"
-        WORKFLOW_NAME="cibuildwheel.yml"
-        ARTIFACT_NAME="wheels"
         gh run --repo "${{ inputs.project-repo }}" \
-            list --branch "${BRANCH}" \
-                --workflow "${WORKFLOW_NAME}" \
+            list --branch "${{ inputs.target-branch }}" \
+                --workflow "${{ inputs.workflow-name }}" \
                 --json event,status,databaseId > runs.json
 
         # Filter on 'push' events to main (merged PRs) that have completed
@@ -60,11 +52,17 @@ runs:
             'sort_by(.databaseId) | reverse | .[0].databaseId' pushes.json
         )
         gh run --repo "${{ inputs.project-repo }}" \
-            download "${RUN_ID}" --name "${ARTIFACT_NAME}"
+            download "${RUN_ID}" --name "${{ inputs.artifact-name }}"
+
         mkdir dist
         mv *.whl dist/
+        echo "# Downloaded ${{ inputs.project-repo }} wheels"
         ls -l dist/
       shell: bash
+
+    - name: Show anaconda-client CLI API
+      run: anaconda --help
+      shell: bash -l {0}
 
     # - name: Install micromamba and anaconda-client
     # - run: "${{ inputs.python }} -m pip install --no-deps --require-hashes --only-binary :all: ${{ inputs.options }} -r ${{ inputs.requirements-file }}"
