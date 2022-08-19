@@ -87,7 +87,7 @@ runs:
 
     - name: Remove old uploads to save space
       run: |
-        # Remove all _but_ the last "${{ inputs.n-latest-uploads }}" package versions
+        # Remove all _but_ the last ${{ inputs.n-latest-uploads }} package versions
         # N.B.: `anaconda show` places the newest packages at the bottom of the output
         # of the 'Versions' section and package versions are preceded with a '   + '.
         anaconda show "${{ inputs.anaconda-user }}/${{ inputs.anaconda-project }}" &> >(grep '+') | \
@@ -105,6 +105,12 @@ runs:
         # fi
       shell: bash -l {0}
 
-    # - name: Install micromamba and anaconda-client
-    # - run: "${{ inputs.python }} -m pip install --no-deps --require-hashes --only-binary :all: ${{ inputs.options }} -r ${{ inputs.requirements-file }}"
-    #   shell: bash -l {0}
+    - name: Cleanup transient files
+      run: |
+        rm -r \
+          runs.json \
+          pushes.json \
+          remove-package-versions.txt \
+          dist
+        rmdir dist
+      shell: bash -l {0}
