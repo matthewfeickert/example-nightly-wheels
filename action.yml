@@ -40,11 +40,7 @@ runs:
 
     # c.f. https://github.com/actions/download-artifact/issues/3#issuecomment-1017141067
     - name: Download wheel artifacts from last build on 'main'
-      env:
-        GITHUB_TOKEN: ${{ inputs.token }}
       run: |
-        echo "${{ inputs.project-repo }}"
-
         BRANCH="main"
         WORKFLOW_NAME="cibuildwheel.yml"
         ARTIFACT_NAME="wheels"
