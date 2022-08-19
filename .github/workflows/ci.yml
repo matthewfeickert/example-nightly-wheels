@@ -41,6 +41,7 @@ jobs:
           project-repo: "scikit-learn/scikit-learn"
           target-branch: "main"
           workflow-name: "wheel builder"
+          workflow-event-type: "schedule"
           artifact-name: "artifact"
           anaconda-user: "scipy-wheels-nightly"
           anaconda-project: "scikit-learn"

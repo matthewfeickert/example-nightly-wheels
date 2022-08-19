@@ -14,6 +14,10 @@ inputs:
   workflow-name:
     description: "Workflow name to query runs"
     required: true
+  workflow-event-type:
+    description: "GitHub event that triggered workflow (push, schedule)"
+    required: true
+    default: "push"
   artifact-name:
     description: "Artifact to try to download"
     required: true
@@ -54,9 +58,9 @@ runs:
                 --workflow "${{ inputs.workflow-name }}" \
                 --json event,status,databaseId > runs.json
 
-        # Filter on 'push' events to main (merged PRs) that have completed
+        # Filter on '${{ inputs.workflow-event-type }}' events to ${{ inputs.target-branch }} (merged PRs) that have completed
         jq --compact-output \
-          '[ .[] | select(.event == "push") | select(.status == "completed") ]' \
+          '[ .[] | select(.event == "${{ inputs.workflow-event-type }}") | select(.status == "completed") ]' \
           runs.json > pushes.json
 
         # Get id of latest build of wheels
