@@ -61,12 +61,12 @@ runs:
         # Filter on '${{ inputs.workflow-event-type }}' events to ${{ inputs.target-branch }} (merged PRs) that have completed
         jq --compact-output \
           '[ .[] | select(.event == "${{ inputs.workflow-event-type }}") | select(.status == "completed") ]' \
-          runs.json > pushes.json
+          runs.json > completed.json
 
         # Get id of latest build of wheels
         RUN_ID=$(
           jq --compact-output \
-            'sort_by(.databaseId) | reverse | .[0].databaseId' pushes.json
+            'sort_by(.databaseId) | reverse | .[0].databaseId' completed.json
         )
         gh run --repo "${{ inputs.project-repo }}" \
             download "${RUN_ID}" --name "${{ inputs.artifact-name }}"
@@ -114,7 +114,7 @@ runs:
       run: |
         rm -r \
           runs.json \
-          pushes.json \
+          completed.json \
           remove-package-versions.txt \
           dist
       shell: bash
