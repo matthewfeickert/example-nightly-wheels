@@ -26,14 +26,16 @@ jobs:
           anaconda-project: "matplotlib"
           anaconda-token: "none"
 
-      - name: matplotlib with default inputs
+      - name: scikit-learn
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: ./
         with:
-          project-repo: "matplotlib/matplotlib"
+          project-repo: "scikit-learn/scikit-learn"
           target-branch: "main"
-          workflow-name: "cibuildwheel.yml"
+          workflow-name: "wheels.yml"
+          artifact-name: "artifact"
           anaconda-user: "scipy-wheels-nightly"
-          anaconda-project: "matplotlib"
+          anaconda-project: "scikit-learn"
           anaconda-token: "none"
+          n-latest-uploads: 1
