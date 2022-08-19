@@ -69,3 +69,25 @@ jobs:
           anaconda-project: "numpy"
           anaconda-token: "none"
           n-latest-uploads: 2
+
+  test-scipy:
+    name: "test scipy"
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run nightly-wheels
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: ./
+        with:
+          project-repo: "scipy/scipy"
+          target-branch: "cibw2"
+          workflow-name: "wheel builder"
+          workflow-event-type: "pull_request"
+          artifact-name: "scipy-1.10.0.dev0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl"
+          anaconda-user: "scipy-wheels-nightly"
+          anaconda-project: "scipy"
+          anaconda-token: "none"
+          n-latest-uploads: 2
