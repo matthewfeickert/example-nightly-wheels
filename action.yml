@@ -51,7 +51,7 @@ runs:
         channels: main
 
     # c.f. https://github.com/actions/download-artifact/issues/3#issuecomment-1017141067
-    - name: Download wheel artifacts from last build on 'main'
+    - name: Download wheel artifacts from last build on '${{ inputs.target-branch }}'
       run: |
         gh run --repo "${{ inputs.project-repo }}" \
             list --branch "${{ inputs.target-branch }}" \
