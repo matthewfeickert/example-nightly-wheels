@@ -19,6 +19,10 @@ inputs:
   project-repo:
     description: "GitHub project name to download built wheels from"
     required: true
+  token:
+    description: "GitHub token for access to gh API"
+    required: false
+    default: "secrets.GITHUB_TOKEN"
 runs:
   using: "composite"
   steps:
@@ -37,7 +41,7 @@ runs:
     # c.f. https://github.com/actions/download-artifact/issues/3#issuecomment-1017141067
     - name: Download wheel artifacts from last build on 'main'
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ inputs.token }}
       run: |
         echo "${{ inputs.project-repo }}"
 
