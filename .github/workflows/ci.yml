@@ -61,7 +61,7 @@ jobs:
         uses: ./
         with:
           project-repo: "numpy/numpy"
-          target-branch: "main"
+          target-branch: "macos1015"
           workflow-name: "wheel builder"
           workflow-event-type: "schedule"
           artifact-name: "cp38-manylinux_x86_64"
