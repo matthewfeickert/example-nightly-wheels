@@ -1,0 +1,36 @@
+name: "example-nightly-wheels"
+description: "Have pip install from a requirements file as securely as possible"
+author: "Matthew Feickert"
+branding:
+  icon: "package"
+  color: "green"
+inputs:
+  python:
+    description: "Command to run Python"
+    required: true
+    default: "python"
+  requirements-file:
+    description: "Path to a requirements file"
+    required: false
+    default: "requirements.txt"
+  options:
+    description: "Extra CLI options"
+    required: false
+runs:
+  using: "composite"
+    defaults:
+      run:
+        shell: bash -l {0}
+  steps:
+    - name: Install micromamba and anaconda-client
+      uses: mamba-org/provision-with-micromamba@v12
+      with:
+        environment-file: false
+        environment-name: nightly-wheels
+        extra-specs: anaconda-client=1.10.0
+        channels: main
+      shell: bash -l {0}
+
+    # - name: Install micromamba and anaconda-client
+    # - run: "${{ inputs.python }} -m pip install --no-deps --require-hashes --only-binary :all: ${{ inputs.options }} -r ${{ inputs.requirements-file }}"
+    #   shell: bash -l {0}
