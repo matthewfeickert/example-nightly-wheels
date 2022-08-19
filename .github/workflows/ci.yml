@@ -26,6 +26,13 @@ jobs:
           anaconda-project: "matplotlib"
           anaconda-token: "none"
 
+  test-scikit-learn:
+    name: "test scikit-learn"
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
       - name: scikit-learn
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
