@@ -77,13 +77,13 @@ runs:
       run: anaconda --help
       shell: bash -l {0}
 
-    - name: Upload wheels to Anaconda Cloud as nightlies
-      run: |
-        anaconda --token ${{ inputs.anaconda-token }} upload \
-          --user ${{ inputs.anaconda-user }} \
-          --skip-existing \
-          dist/*.whl
-      shell: bash -l {0}
+    # - name: Upload wheels to Anaconda Cloud as nightlies
+    #   run: |
+    #     anaconda --token ${{ inputs.anaconda-token }} upload \
+    #       --user ${{ inputs.anaconda-user }} \
+    #       --skip-existing \
+    #       dist/*.whl
+    #   shell: bash -l {0}
 
     - name: Remove old uploads to save space
       run: |
@@ -95,14 +95,14 @@ runs:
             head --lines "-${{ inputs.n-latest-uploads }}" > remove-package-versions.txt
 
         cat remove-package-versions.txt
-        if [ -s remove-package-versions.txt ]; then
-            while LANG=C IFS= read -r package_version ; do
-                echo "# Removing ${{ inputs.anaconda-user }}/${{ inputs.anaconda-project }}/${package_version}"
-                anaconda --token ${{ inputs.anaconda-token }} remove \
-                  --force \
-                  "${{ inputs.anaconda-user }}/${{ inputs.anaconda-project }}/${package_version}"
-            done <remove-package-versions.txt
-        fi
+        # if [ -s remove-package-versions.txt ]; then
+        #     while LANG=C IFS= read -r package_version ; do
+        #         echo "# Removing ${{ inputs.anaconda-user }}/${{ inputs.anaconda-project }}/${package_version}"
+        #         anaconda --token ${{ inputs.anaconda-token }} remove \
+        #           --force \
+        #           "${{ inputs.anaconda-user }}/${{ inputs.anaconda-project }}/${package_version}"
+        #     done <remove-package-versions.txt
+        # fi
       shell: bash -l {0}
 
     # - name: Install micromamba and anaconda-client
