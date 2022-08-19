@@ -7,14 +7,14 @@ on:
     branches: [ main ]
 
 jobs:
-  test-default-inputs:
-    name: "test default inputs"
+  test-matplotlib-default-inputs:
+    name: "test matplotlib with default inputs"
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
 
-      - name: matplotlib with default inputs
+      - name: Run nightly-wheels
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: ./
@@ -33,7 +33,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: scikit-learn
+      - name: Run nightly-wheels
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: ./
