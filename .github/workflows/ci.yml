@@ -64,7 +64,7 @@ jobs:
           target-branch: "macos1015"
           workflow-name: "wheel builder"
           workflow-event-type: "pull_request"
-          artifact-name: "cp38-manylinux_x86_64"
+          artifact-name: "*"
           anaconda-user: "scipy-wheels-nightly"
           anaconda-project: "numpy"
           anaconda-token: "none"
