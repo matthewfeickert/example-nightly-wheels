@@ -18,6 +18,19 @@ inputs:
     description: "Artifact to try to download"
     required: true
     default: "wheels"
+  anaconda-user:
+    description: "User name on Anaconda Cloud"
+    required: true
+  anaconda-project:
+    description: "Project name on Anaconda Cloud"
+    required: true
+  anaconda-token:
+    description: "Authentication token for Anaconda Cloud. Probably secrets.ANACONDA_ORG_UPLOAD_TOKEN"
+    required: true
+  n-latest-uploads:
+    description: "Number of uploads to keep on Anaconda Cloud."
+    required: true
+    default: 5
   token:
     description: "GitHub token for access to gh API"
     required: false
@@ -62,6 +75,34 @@ runs:
 
     - name: Show anaconda-client CLI API
       run: anaconda --help
+      shell: bash -l {0}
+
+    - name: Upload wheels to Anaconda Cloud as nightlies
+      run: |
+        anaconda --token ${{ inputs.anaconda-token }} upload \
+          --user ${{ inputs.anaconda-user }} \
+          --skip-existing \
+          dist/*.whl
+      shell: bash -l {0}
+
+    - name: Remove old uploads to save space
+      run: |
+        # Remove all _but_ the last "${{ inputs.n-latest-uploads }}" package versions
+        # N.B.: `anaconda show` places the newest packages at the bottom of the output
+        # of the 'Versions' section and package versions are preceded with a '   + '.
+        anaconda show "${{ inputs.anaconda-user }}/${{ inputs.anaconda-project }}" &> >(grep '+') | \
+            sed 's/.* + //' | \
+            head --lines "-${{ inputs.n-latest-uploads }}" > remove-package-versions.txt
+
+        cat remove-package-versions.txt
+        if [ -s remove-package-versions.txt ]; then
+            while LANG=C IFS= read -r package_version ; do
+                echo "# Removing ${{ inputs.anaconda-user }}/${{ inputs.anaconda-project }}/${package_version}"
+                anaconda --token ${{ inputs.anaconda-token }} remove \
+                  --force \
+                  "${{ inputs.anaconda-user }}/${{ inputs.anaconda-project }}/${package_version}"
+            done <remove-package-versions.txt
+        fi
       shell: bash -l {0}
 
     # - name: Install micromamba and anaconda-client
