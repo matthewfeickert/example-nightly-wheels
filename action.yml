@@ -112,5 +112,4 @@ runs:
           pushes.json \
           remove-package-versions.txt \
           dist
-        rmdir dist
-      shell: bash -l {0}
+      shell: bash
