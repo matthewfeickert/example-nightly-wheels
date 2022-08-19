@@ -14,7 +14,19 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Default inputs
+      - name: matplotlib with default inputs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: ./
+        with:
+          project-repo: "matplotlib/matplotlib"
+          target-branch: "main"
+          workflow-name: "cibuildwheel.yml"
+          anaconda-user: "scipy-wheels-nightly"
+          anaconda-project: "matplotlib"
+          anaconda-token: "none"
+
+      - name: matplotlib with default inputs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: ./
