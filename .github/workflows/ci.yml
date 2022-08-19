@@ -47,3 +47,25 @@ jobs:
           anaconda-project: "scikit-learn"
           anaconda-token: "none"
           n-latest-uploads: 1
+
+  test-numpy:
+    name: "test numpy"
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run nightly-wheels
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: ./
+        with:
+          project-repo: "numpy/numpy"
+          target-branch: "main"
+          workflow-name: "wheel builder"
+          workflow-event-type: "schedule"
+          artifact-name: "artifact"
+          anaconda-user: "scipy-wheels-nightly"
+          anaconda-project: "numpy"
+          anaconda-token: "none"
+          n-latest-uploads: 2
