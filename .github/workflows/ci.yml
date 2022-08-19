@@ -40,7 +40,7 @@ jobs:
         with:
           project-repo: "scikit-learn/scikit-learn"
           target-branch: "main"
-          workflow-name: "wheels.yml"
+          workflow-name: "wheel builder"
           artifact-name: "artifact"
           anaconda-user: "scipy-wheels-nightly"
           anaconda-project: "scikit-learn"
