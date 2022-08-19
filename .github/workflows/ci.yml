@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test-default-inputs:
+    name: "test default inputs"
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Default inputs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: ./
+        with:
+          project-repo: "matplotlib/matplotlib"
+          target-branch: "main"
+          workflow-name: "cibuildwheel.yml"
+          anaconda-user: "scipy-wheels-nightly"
+          anaconda-project: "matplotlib"
+          anaconda-token: "none"
