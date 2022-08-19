@@ -7,14 +7,14 @@ on:
     branches: [ main ]
 
 jobs:
-  test-default-inputs:
-    name: "test default inputs"
+  test-matplotlib-default-inputs:
+    name: "test matplotlib with default inputs"
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
 
-      - name: Default inputs
+      - name: Run nightly-wheels
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: ./
@@ -25,3 +25,25 @@ jobs:
           anaconda-user: "scipy-wheels-nightly"
           anaconda-project: "matplotlib"
           anaconda-token: "none"
+
+  test-scikit-learn:
+    name: "test scikit-learn"
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run nightly-wheels
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: ./
+        with:
+          project-repo: "scikit-learn/scikit-learn"
+          target-branch: "main"
+          workflow-name: "wheel builder"
+          workflow-event-type: "schedule"
+          artifact-name: "artifact"
+          anaconda-user: "scipy-wheels-nightly"
+          anaconda-project: "scikit-learn"
+          anaconda-token: "none"
+          n-latest-uploads: 1
